@@ -1,9 +1,26 @@
-import React from 'react'
+import { fetchCustomers } from '@/app/lib/data';
+import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
+import Form from '@/app/ui/invoices/create-form';
 
-function CreateInvoice() {
+async function CreateInvoice() {
+  const customers = await fetchCustomers();
+
   return (
-    <div>CreateInvoice Page</div>
-  )
+    <main>
+      <Breadcrumbs
+        breadcrumbs={[
+          { label: 'Invoices', href: '/dashboard/invoices' },
+          {
+            label: 'Create Invoice',
+            href: '/dashboard/invoices/create',
+            active: true,
+          },
+        ]}
+      />
+
+      <Form customers={customers} />
+    </main>
+  );
 }
 
-export default CreateInvoice
+export default CreateInvoice;

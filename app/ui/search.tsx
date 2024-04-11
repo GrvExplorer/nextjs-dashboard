@@ -1,18 +1,31 @@
 'use client';
 
+import { useDebouncedCallback } from 'use-debounce';
+
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { useSearchParams } from 'next/navigation';
+import { SearchParamsContext } from 'next/dist/shared/lib/hooks-client-context.shared-runtime';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function Search({ placeholder }: { placeholder: string }) {
-
   const searchParams = useSearchParams()
-console.log( new URLSearchParams(searchParams));
+  const navigate = useRouter()
+  const pathname = usePathname()
 
-
-  function handleSearch(term: string) {
+  const handleSearch = useDebouncedCallback((term) => {
+    console.log(`Searching... ${term}`);
+   
     const params = new URLSearchParams(searchParams);
-    
-  }
+    if (term) {
+      params.set('search', term);
+      params.set('page', '1')
+    } else {
+      params.delete('search');
+      params.delete('page');
+    }
+    navigate.replace(`${pathname}?${params.toString()}`);
+  }, 300);
+  
 
   return (
     <div className="relative flex flex-1 flex-shrink-0">
@@ -20,6 +33,7 @@ console.log( new URLSearchParams(searchParams));
         Search
       </label>
       <input
+      defaultValue={searchParams.get('search')?.toString()}
         onChange={(e) => handleSearch(e.target.value)}
         className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
         placeholder={placeholder}

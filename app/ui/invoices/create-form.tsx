@@ -7,10 +7,29 @@ import {
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
+import { ActionAsyncStorage } from 'next/dist/client/components/action-async-storage.external';
+import CreateInvoice from '@/app/dashboard/invoices/create/page';
 
 export default function Form({ customers }: { customers: CustomerField[] }) {
+
+  const handleCreateInvoice = async (formData: FormData) => {
+    'use server'
+    const invoiceData = {
+      customerId: formData.get('customerId'),
+      amount: formData.get('amount'),
+      status: formData.get('status')
+    }
+      
+    console.log(typeof invoiceData.status);
+    
+  
+  }
+
+
   return (
-    <form>
+    <form
+    action={handleCreateInvoice}
+    >
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Customer Name */}
         <div className="mb-4">
