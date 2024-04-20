@@ -3,17 +3,17 @@ import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
 import RevenueChart from '@/app/ui/dashboard/revenue-chart';
 import { lusitana } from '@/app/ui/fonts';
 import {
-  CardSkeleton,
   CardsSkeleton,
   LatestInvoicesSkeleton,
   RevenueChartSkeleton,
 } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
-import {
-  fetchCardData,
-  fetchLatestInvoices,
-  fetchRevenue,
-} from '../../lib/data';
+
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'dashboard',
+};
 
 export default async function page() {
   return (

@@ -1,17 +1,25 @@
 import {
-  fetchCardData,
   fetchCustomers,
   fetchInvoiceById,
 } from '@/app/lib/data';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import Form from '@/app/ui/invoices/edit-form';
-import React from 'react';
+import { notFound } from 'next/navigation';
+
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Edit Invoice',
+};
 
 async function Edit({ params }: { params: { id: string } }) {
   const [invoice, customers] = await Promise.all([
     fetchInvoiceById(params.id),
     fetchCustomers(),
   ]);
+
+  if (!invoice) notFound()
+
   return (
     <main>
       <Breadcrumbs
